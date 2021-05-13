@@ -1,28 +1,86 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <modal-bootstrap>
+      <template v-slot:headerSlot>
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          x
+        </button>
+      </template>
+      <template v-slot:bodySlot>
+        <h1>Cambio de moneda</h1>
+        <input type="text" v-model="inputText" class="col-3" />
+        <p>
+          El cambio de {{ messageInput }} en dolares son {{ currencyExchange }}
+        </p>
+      </template>
+      <template v-slot:footerSlot>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </template>
+    </modal-bootstrap>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
-
+import modalBootstrap from "./components/modalBootstrap.vue";
 export default {
-  name: "App",
-  components: {
-    HelloWorld,
+  name: "app",
+  components: { modalBootstrap },
+  data() {
+    return {
+      inputText: "",
+      regex: /^[0-9]*$/,
+    };
+  },
+  computed: {
+    messageInput() {
+      const checkNumber = this.regex.test(this.inputText);
+      if (checkNumber) {
+        return `${this.inputText}€`;
+      } else {
+        return this.alertMessage();
+      }
+    },
+    currencyExchange() {
+      let euros = this.inputText * 1.23;
+      return euros + "$";
+    },
+  },
+  methods: {
+    alertMessage() {
+      this.inputText = "";
+      alert("You have to text only numbers");
+    },
+    clean() {
+      const btn = document.querySelectorAll("button");
+
+      for (const button of btn) {
+        button.addEventListener("click", () => {
+          return (this.inputText = "");
+        });
+      }
+    },
+  },
+  mounted() {
+    this.clean();
   },
 };
 </script>
 
-<style>
+<style scoped>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: tomato;
+  height: 100vh;
 }
 </style>
