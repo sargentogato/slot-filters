@@ -9,7 +9,6 @@
     >
       Abrir Modal
     </button>
-
     <!-- Modal -->
     <div
       class="modal fade"
@@ -41,4 +40,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+h3 {
+  width: 100%;
+  background-color: yellow;
+}
+</style>

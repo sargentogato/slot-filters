@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <h3 v-show="showMessage">{{ messageClosed }}</h3>
     <modal-bootstrap>
       <template v-slot:headerSlot>
         <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
@@ -8,6 +9,7 @@
           class="close"
           data-dismiss="modal"
           aria-label="Close"
+          v-on:click="closedModalMessage"
         >
           x
         </button>
@@ -20,7 +22,12 @@
         </p>
       </template>
       <template v-slot:footerSlot>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          v-on:click="closedModalMessage"
+        >
           Close
         </button>
         <button type="button" class="btn btn-primary">Save changes</button>
@@ -38,6 +45,8 @@ export default {
     return {
       inputText: "",
       regex: /^[0-9]*$/,
+      messageClosed: "Has cerrado el Modal",
+      showMessage: false,
     };
   },
   computed: {
@@ -68,6 +77,13 @@ export default {
         });
       }
     },
+    closedModalMessage() {
+      this.showMessage = true;
+
+      setTimeout(() => {
+        this.showMessage = false;
+      }, 3000);
+    },
   },
   mounted() {
     this.clean();
@@ -78,9 +94,14 @@ export default {
 <style scoped>
 #app {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   background-color: tomato;
   height: 100vh;
+}
+
+h3 {
+  margin-block-end: 1rem;
 }
 </style>
